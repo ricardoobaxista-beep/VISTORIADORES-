@@ -707,6 +707,10 @@
             <feGaussianBlur stdDeviation="1.4" result="b"/>
             <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
           </filter>
+          <filter id="labelGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="1.5" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
         </defs>
 
         <!-- Fundo radial -->
@@ -765,57 +769,63 @@
               stroke-dasharray="100" stroke-dashoffset="100"
               style="animation:drawRt 3.5s ease-in-out 2.8s infinite;"/>
 
-        <!-- Pontos municípios com labels rotativos -->
+        <!-- Vistoriadores móveis — abaixo dos labels -->
+        <circle r="3.5" fill="#00ffcc" filter="url(#dotGlow2)" style="offset-path:path('M80,86 L78,102 L76,118 L74,138');animation:mov1 4s linear infinite;"/>
+        <circle r="3"   fill="#f59e0b" filter="url(#dotGlow2)" style="offset-path:path('M60,72 L46,74 L32,72 L16,68');animation:mov2 4.5s linear 1.2s infinite;"/>
+        <circle r="3"   fill="#7c3aed" filter="url(#dotGlow2)" style="offset-path:path('M100,58 L114,46 L122,34 L126,18');animation:mov3 5s linear 2.4s infinite;"/>
+
+        <!-- ── PONTOS + LABELS — renderizados POR CIMA de tudo ── -->
         <!-- Fortaleza — apenas ponto, sem label -->
         <circle filter="url(#dotGlow2)" cx="80" cy="66" r="3.5" fill="#00d4ff" style="animation:dotPop 2s ease-in-out infinite;"/>
+
         <!-- Caucaia -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 2s infinite">
-          <circle filter="url(#dotGlow2)" cx="44" cy="68" r="3" fill="#7c3aed" style="animation:dotPop 2s ease-in-out 0.4s infinite;"/>
-          <line x1="44" y1="65" x2="44" y2="57" stroke="#7c3aed" stroke-width="1.1" opacity="0.8"/>
-          <rect x="24" y="49" width="40" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(124,58,237,0.6)" stroke-width="0.9"/>
-          <text x="44" y="59.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#7c3aed">Caucaia</text>
+          <circle filter="url(#dotGlow2)" cx="44" cy="68" r="3.5" fill="#7c3aed" style="animation:dotPop 2s ease-in-out 0.4s infinite;"/>
+          <line x1="44" y1="64" x2="44" y2="56" stroke="#7c3aed" stroke-width="1.3" opacity="0.9"/>
+          <rect x="22" y="47" width="44" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#7c3aed" stroke-width="1.1"/>
+          <text x="44" y="57.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#7c3aed">Caucaia</text>
         </g>
         <!-- Maracanaú -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 4s infinite">
-          <circle filter="url(#dotGlow2)" cx="52" cy="90" r="3" fill="#00ffcc" style="animation:dotPop 2s ease-in-out 0.8s infinite;"/>
-          <line x1="52" y1="87" x2="45" y2="79" stroke="#00ffcc" stroke-width="1.1" opacity="0.8"/>
-          <rect x="18" y="71" width="46" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(0,255,204,0.6)" stroke-width="0.9"/>
-          <text x="41" y="81.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#00ffcc">Maracanaú</text>
+          <circle filter="url(#dotGlow2)" cx="52" cy="90" r="3.5" fill="#00ffcc" style="animation:dotPop 2s ease-in-out 0.8s infinite;"/>
+          <line x1="52" y1="86" x2="45" y2="78" stroke="#00ffcc" stroke-width="1.3" opacity="0.9"/>
+          <rect x="16" y="69" width="50" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#00ffcc" stroke-width="1.1"/>
+          <text x="41" y="79.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#00ffcc">Maracanaú</text>
         </g>
         <!-- Eusébio -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 6s infinite">
-          <circle filter="url(#dotGlow2)" cx="106" cy="80" r="3" fill="#00d4ff" style="animation:dotPop 2s ease-in-out 1.2s infinite;"/>
-          <line x1="106" y1="77" x2="106" y2="69" stroke="#00d4ff" stroke-width="1.1" opacity="0.8"/>
-          <rect x="87" y="61" width="38" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(0,212,255,0.6)" stroke-width="0.9"/>
-          <text x="106" y="71.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#00d4ff">Eusébio</text>
+          <circle filter="url(#dotGlow2)" cx="106" cy="80" r="3.5" fill="#00d4ff" style="animation:dotPop 2s ease-in-out 1.2s infinite;"/>
+          <line x1="106" y1="84" x2="106" y2="92" stroke="#00d4ff" stroke-width="1.3" opacity="0.9"/>
+          <rect x="86" y="92" width="40" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#00d4ff" stroke-width="1.1"/>
+          <text x="106" y="102.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#00d4ff">Eusébio</text>
         </g>
         <!-- Aquiraz -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 8s infinite">
-          <circle filter="url(#dotGlow2)" cx="114" cy="62" r="3" fill="#ff6b35" style="animation:dotPop 2s ease-in-out 1.6s infinite;"/>
-          <line x1="114" y1="59" x2="114" y2="51" stroke="#ff6b35" stroke-width="1.1" opacity="0.8"/>
-          <rect x="96" y="43" width="36" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(255,107,53,0.6)" stroke-width="0.9"/>
-          <text x="114" y="53.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#ff6b35">Aquiraz</text>
+          <circle filter="url(#dotGlow2)" cx="114" cy="62" r="3.5" fill="#ff6b35" style="animation:dotPop 2s ease-in-out 1.6s infinite;"/>
+          <line x1="114" y1="58" x2="114" y2="50" stroke="#ff6b35" stroke-width="1.3" opacity="0.9"/>
+          <rect x="95" y="41" width="38" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#ff6b35" stroke-width="1.1"/>
+          <text x="114" y="51.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#ff6b35">Aquiraz</text>
         </g>
         <!-- Pacatuba -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 10s infinite">
-          <circle filter="url(#dotGlow2)" cx="62" cy="110" r="3" fill="#f59e0b" style="animation:dotPop 2s ease-in-out 0.2s infinite;"/>
-          <line x1="62" y1="107" x2="62" y2="99" stroke="#f59e0b" stroke-width="1.1" opacity="0.8"/>
-          <rect x="42" y="91" width="40" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(245,158,11,0.6)" stroke-width="0.9"/>
-          <text x="62" y="101.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#f59e0b">Pacatuba</text>
+          <circle filter="url(#dotGlow2)" cx="62" cy="110" r="3.5" fill="#f59e0b" style="animation:dotPop 2s ease-in-out 0.2s infinite;"/>
+          <line x1="62" y1="106" x2="62" y2="98" stroke="#f59e0b" stroke-width="1.3" opacity="0.9"/>
+          <rect x="40" y="89" width="44" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#f59e0b" stroke-width="1.1"/>
+          <text x="62" y="99.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#f59e0b">Pacatuba</text>
         </g>
         <!-- Horizonte -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 12s infinite">
-          <circle filter="url(#dotGlow2)" cx="80" cy="104" r="3" fill="#10b981" style="animation:dotPop 2s ease-in-out 1.0s infinite;"/>
-          <line x1="80" y1="101" x2="80" y2="93" stroke="#10b981" stroke-width="1.1" opacity="0.8"/>
-          <rect x="60" y="85" width="40" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(16,185,129,0.6)" stroke-width="0.9"/>
-          <text x="80" y="95.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#10b981">Horizonte</text>
+          <circle filter="url(#dotGlow2)" cx="80" cy="104" r="3.5" fill="#10b981" style="animation:dotPop 2s ease-in-out 1.0s infinite;"/>
+          <line x1="80" y1="100" x2="80" y2="92" stroke="#10b981" stroke-width="1.3" opacity="0.9"/>
+          <rect x="58" y="83" width="44" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#10b981" stroke-width="1.1"/>
+          <text x="80" y="93.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#10b981">Horizonte</text>
         </g>
         <!-- Maranguape -->
         <g class="mun-pin" style="animation:pinCycle 16s ease-in-out 14s infinite">
-          <circle filter="url(#dotGlow2)" cx="36" cy="48" r="2.5" fill="#00ffcc" style="animation:dotPop 2s ease-in-out 1.8s infinite;"/>
-          <line x1="36" y1="45" x2="36" y2="37" stroke="#00ffcc" stroke-width="1.1" opacity="0.8"/>
-          <rect x="12" y="29" width="48" height="14" rx="3" fill="rgba(0,8,18,0.88)" stroke="rgba(0,255,204,0.6)" stroke-width="0.9"/>
-          <text x="36" y="39.5" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="7.5" font-weight="700" fill="#00ffcc">Maranguape</text>
+          <circle filter="url(#dotGlow2)" cx="36" cy="48" r="3" fill="#00ffcc" style="animation:dotPop 2s ease-in-out 1.8s infinite;"/>
+          <line x1="36" y1="44" x2="36" y2="36" stroke="#00ffcc" stroke-width="1.3" opacity="0.9"/>
+          <rect x="10" y="27" width="52" height="15" rx="4" fill="rgba(0,4,12,0.97)" stroke="#00ffcc" stroke-width="1.1"/>
+          <text x="36" y="37.8" text-anchor="middle" font-family="DM Sans,sans-serif" font-size="8" font-weight="700" fill="#00ffcc">Maranguape</text>
         </g>
 
         <style>
@@ -834,11 +844,6 @@
           @keyframes mov2 { 0%{offset-distance:0%;opacity:0} 10%{opacity:1} 88%{opacity:1} 100%{offset-distance:100%;opacity:0} }
           @keyframes mov3 { 0%{offset-distance:0%;opacity:0} 10%{opacity:1} 88%{opacity:1} 100%{offset-distance:100%;opacity:0} }
         </style>
-
-        <!-- Vistoriadores móveis -->
-        <circle r="3.5" fill="#00ffcc" filter="url(#dotGlow2)" style="offset-path:path('M80,86 L78,102 L76,118 L74,138');animation:mov1 4s linear infinite;"/>
-        <circle r="3"   fill="#f59e0b" filter="url(#dotGlow2)" style="offset-path:path('M60,72 L46,74 L32,72 L16,68');animation:mov2 4.5s linear 1.2s infinite;"/>
-        <circle r="3"   fill="#7c3aed" filter="url(#dotGlow2)" style="offset-path:path('M100,58 L114,46 L122,34 L126,18');animation:mov3 5s linear 2.4s infinite;"/>
       </svg>
 
       <!-- Anéis giratórios -->
@@ -877,7 +882,7 @@
     <span class="s-icon">📊</span><span>Produção</span>
   </button>
   <button class="sidebar-item" id="sidebarCancel" onclick="switchTab('cancel')">
-    <span class="s-icon">🚫</span><span>Cancelados</span>
+    <span class="s-icon">🚫</span><span>Improdutivas</span>
   </button>
 
   <div class="sidebar-bottom">
@@ -976,6 +981,14 @@
   <input type="date" id="dateFrom" onchange="applyDateRange()">
   <span class="filter-label">até</span>
   <input type="date" id="dateTo" onchange="applyDateRange()">
+  <span class="filter-label" style="margin-left:4px">Vistoriador:</span>
+  <select id="filterVist" onchange="applyVistFilter()" style="
+    background:var(--surface2);border:1px solid var(--border);color:var(--text);
+    padding:8px 12px;border-radius:8px;font-family:var(--font-body);font-size:0.8rem;
+    cursor:pointer;outline:none;min-width:150px;color-scheme:dark;
+  ">
+    <option value="">Todos</option>
+  </select>
 </div>
 
 <!-- ── PAINEL PRODUÇÃO ── -->
@@ -1230,12 +1243,35 @@ function parseData(rows) {
   document.getElementById('filtersArea').style.display = 'flex';
 }
 
+let activeVistFilter = '';
+
 function buildDateFilters() {
   const dates = [...new Set(rawData.map(r => r.data))].filter(Boolean).sort();
   if (dates.length > 0) {
     document.getElementById('dateFrom').value = dates[0];
     document.getElementById('dateTo').value = dates[dates.length - 1];
   }
+  // Popula select de vistoriadores
+  const sel = document.getElementById('filterVist');
+  const nomes = [...new Set(rawData.map(r => r.nome))].filter(Boolean).sort();
+  sel.innerHTML = '<option value="">Todos</option>' + nomes.map(n => `<option value="${n}">${n}</option>`).join('');
+  activeVistFilter = '';
+}
+
+function _applyFilters() {
+  const from = document.getElementById('dateFrom').value;
+  const to   = document.getElementById('dateTo').value;
+  filteredData = rawData.filter(r =>
+    (!from || !r.data || r.data >= from) &&
+    (!to   || !r.data || r.data <= to)  &&
+    (!activeVistFilter || r.nome === activeVistFilter)
+  );
+  renderAll();
+}
+
+function applyVistFilter() {
+  activeVistFilter = document.getElementById('filterVist').value;
+  _applyFilters();
 }
 
 function setFilter(f) { applyFilter(f); }
@@ -1251,8 +1287,7 @@ function applyDateRange() {
   const to   = document.getElementById('dateTo').value;
   if (!from || !to) return;
   document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
-  filteredData = rawData.filter(r => r.data >= from && r.data <= to);
-  renderAll();
+  _applyFilters();
 }
 
 // ───── RENDER ─────
@@ -1434,11 +1469,13 @@ function renderCharts() {
       plugins: {
         legend: { labels: { color: '#94a3b8', font: { family: 'DM Sans', size: 12 } } },
         datalabels: {
-          anchor: 'end',
-          align: 'start',
+          anchor: 'center',
+          align: 'center',
           color: '#fff',
-          font: { family: 'DM Sans', size: 12, weight: '700' },
+          font: { family: 'DM Sans', size: 11, weight: '700' },
           formatter: v => v > 0 ? v : '',
+          textShadowColor: 'rgba(0,0,0,0.5)',
+          textShadowBlur: 4,
         }
       },
       scales: {
@@ -1670,7 +1707,7 @@ function saveCancelTablePNG() {
   }).then(canvas => {
     if (btn) btn.style.visibility = 'visible';
     const link = document.createElement('a');
-    link.download = `tabela_cancelados_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.png`;
+    link.download = `tabela_improdutivas_${new Date().toLocaleDateString('pt-BR').replace(/\//g,'-')}.png`;
     link.href = canvas.toDataURL('image/png', 1.0);
     link.click();
   }).catch(() => {
@@ -1908,7 +1945,7 @@ function renderCancelados() {
 
   document.getElementById('cancelKpiGrid').innerHTML = `
     <div class="kpi-card red">
-      <div class="kpi-label">Total Cancelados</div>
+      <div class="kpi-label">Total Improdutivas</div>
       <div class="kpi-value">${total}</div>
       <div class="kpi-sub">registros ${total < cancelData.length ? 'filtrados' : 'cancelados'}</div>
     </div>
@@ -1920,12 +1957,12 @@ function renderCancelados() {
     <div class="kpi-card purple">
       <div class="kpi-label">Vistoriadores</div>
       <div class="kpi-value">${vists.length}</div>
-      <div class="kpi-sub">com cancelamentos</div>
+      <div class="kpi-sub">com improdutivas</div>
     </div>
     <div class="kpi-card blue">
       <div class="kpi-label">Maior Incidência</div>
       <div class="kpi-value" style="font-size:0.95rem;line-height:1.3;margin-top:4px">${setorMaior ? setorMaior.s : '—'}</div>
-      <div class="kpi-sub">${setorMaior ? setorMaior.n + ' cancelamentos' : ''}</div>
+      <div class="kpi-sub">${setorMaior ? setorMaior.n + ' improdutivas' : ''}</div>
     </div>
   `;
 
@@ -1938,11 +1975,11 @@ function renderCancelados() {
   // ── CHARTS HTML ──
   const area = document.getElementById('cancelChartsArea');
   area.innerHTML = `
-    <div class="section-divider">Análise de Cancelamentos</div>
+    <div class="section-divider">Análise de Improdutivas</div>
     <div class="charts-row two">
       <div class="chart-card">
         <div class="chart-title" style="justify-content:space-between">
-          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--red)"></span> Cancelamentos por Setor</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--red)"></span> Improdutivas por Setor</span>
           <button class="btn-print" onclick="saveChartPNG('cancelChartSetor','cancel_por_setor')" title="Salvar como PNG">${CAM_SVG}</button>
         </div>
         <div class="chart-sub">Distribuição por tipo de serviço</div>
@@ -1950,7 +1987,7 @@ function renderCancelados() {
       </div>
       <div class="chart-card">
         <div class="chart-title" style="justify-content:space-between">
-          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--accent2)"></span> Cancelamentos por Vistoriador</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--accent2)"></span> Improdutivas por Vistoriador</span>
           <button class="btn-print" onclick="saveChartPNG('cancelChartVist','cancel_por_vistoriador')" title="Salvar como PNG">${CAM_SVG}</button>
         </div>
         <div class="chart-sub">Quantidade por profissional</div>
@@ -1960,7 +1997,7 @@ function renderCancelados() {
     <div class="charts-row two">
       <div class="chart-card">
         <div class="chart-title" style="justify-content:space-between">
-          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--accent3)"></span> Cancelamentos por Município</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--accent3)"></span> Improdutivas por Município</span>
           <button class="btn-print" onclick="saveChartPNG('cancelChartMun','cancel_por_municipio')" title="Salvar como PNG">${CAM_SVG}</button>
         </div>
         <div class="chart-sub">Locais com mais ocorrências</div>
@@ -1971,7 +2008,7 @@ function renderCancelados() {
           <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--yellow)"></span> Vistoriador × Setor</span>
           <button class="btn-print" onclick="saveChartPNG('cancelChartCross','cancel_vistoriador_setor')" title="Salvar como PNG">${CAM_SVG}</button>
         </div>
-        <div class="chart-sub">Cruzamento de cancelamentos</div>
+        <div class="chart-sub">Cruzamento de improdutivas</div>
         <div class="chart-wrap" style="height:240px;position:relative"><canvas id="cancelChartCross"></canvas></div>
       </div>
     </div>
@@ -2006,7 +2043,7 @@ function renderCancelados() {
     type: 'bar',
     data: {
       labels: vistNomes.map(n => n.split(' ')[0]),
-      datasets: [{ label: 'Cancelamentos', data: vistCount, backgroundColor: 'rgba(239,68,68,0.75)', borderRadius: 6, borderSkipped: false }]
+      datasets: [{ label: 'Improdutivas', data: vistCount, backgroundColor: 'rgba(239,68,68,0.75)', borderRadius: 6, borderSkipped: false }]
     },
     options: {
       responsive: true, maintainAspectRatio: false, devicePixelRatio: 4,
@@ -2028,7 +2065,7 @@ function renderCancelados() {
     type: 'bar',
     data: {
       labels: munCount.map(x => x.m),
-      datasets: [{ label: 'Cancelamentos', data: munCount.map(x => x.v), backgroundColor: munCount.map((_,i) => COLORS[i % COLORS.length]), borderRadius: 6, borderSkipped: false }]
+      datasets: [{ label: 'Improdutivas', data: munCount.map(x => x.v), backgroundColor: munCount.map((_,i) => COLORS[i % COLORS.length]), borderRadius: 6, borderSkipped: false }]
     },
     options: {
       indexAxis: 'y', responsive: true, maintainAspectRatio: false, devicePixelRatio: 4,
@@ -2070,13 +2107,13 @@ function renderCancelados() {
 
   const CAM_SVG_T = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`;
   document.getElementById('cancelTableArea').innerHTML = `
-    <div class="section-divider">Registros Cancelados com Observações</div>
+    <div class="section-divider">Registros Improdutivos com Observações</div>
     <div class="chart-card">
       <div class="chart-title" style="justify-content:space-between">
-        <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--red)"></span> Tabela de Cancelados</span>
+        <span style="display:flex;align-items:center;gap:8px"><span class="dot" style="background:var(--red)"></span> Tabela de Improdutivas</span>
         <button class="btn-print" onclick="saveCancelTablePNG()" title="Salvar tabela como PNG">${CAM_SVG_T}</button>
       </div>
-      <div class="chart-sub">Todos os registros com CANCELADA = SIM e respectivos motivos</div>
+      <div class="chart-sub">Todos os registros improdutivos e respectivos motivos</div>
       <div class="table-wrap">
         <table>
           <thead>
