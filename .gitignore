@@ -1,0 +1,14 @@
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Arquivos temporários
+*.tmp
+*.bak
+*.log
+
+# Dados sensíveis — nunca subir planilhas com dados reais
+*.xlsx
+*.xls
+*.csv
