@@ -1087,6 +1087,12 @@ const GAS_URL = ''; // ex: https://script.google.com/macros/s/SEU_ID/exec
 function fetchCSV(sheetUrl) {
   return new Promise((resolve, reject) => {
 
+    // ── Detecta abertura local (file://) ──
+    if (window.location.protocol === 'file:') {
+      reject(new Error('local'));
+      return;
+    }
+
     // ── Modo 1: via Google Apps Script (mais confiável) ──
     if (GAS_URL) {
       const xhr = new XMLHttpRequest();
@@ -1094,55 +1100,82 @@ function fetchCSV(sheetUrl) {
       xhr.timeout = 15000;
       xhr.onload = () => {
         if (xhr.status === 200 && xhr.responseText.length > 10) resolve(xhr.responseText);
-        else tryProxies();
+        else tryDirect();
       };
-      xhr.onerror = xhr.ontimeout = () => tryProxies();
+      xhr.onerror = xhr.ontimeout = () => tryDirect();
       xhr.send();
       return;
     }
 
-    tryProxies();
+    tryDirect();
 
-    // ── Modo 2: proxies públicos ──
+    // ── Modo 2: direto (Google Sheets público permite CORS) ──
+    function tryDirect() {
+      fetch(sheetUrl)
+        .then(r => {
+          if (r.ok) return r.text();
+          throw new Error('not ok');
+        })
+        .then(text => {
+          if (text && text.length > 10) resolve(text);
+          else tryProxies();
+        })
+        .catch(() => tryProxies());
+    }
+
+    // ── Modo 3: proxies públicos (fallback) ──
     function tryProxies() {
+      const enc = encodeURIComponent(sheetUrl);
       const proxyList = [
-        `https://corsproxy.io/?${encodeURIComponent(sheetUrl)}`,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(sheetUrl)}`,
-        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(sheetUrl)}`,
-        `https://proxy.cors.sh/${sheetUrl}`,
+        `https://api.allorigins.win/raw?url=${enc}`,
+        `https://api.codetabs.com/v1/proxy?quest=${enc}`,
+        `https://thingproxy.freeboard.io/fetch/${sheetUrl}`,
+        `https://corsproxy.io/?${enc}`,
       ];
       let i = 0;
       function next() {
         if (i >= proxyList.length) {
-          reject(new Error(
-            'Não foi possível buscar os dados online.\n\n' +
-            '📌 SOLUÇÃO: Abra o arquivo via servidor local:\n' +
-            '1. Abra o Prompt de Comando na pasta do arquivo\n' +
-            '2. Digite: python -m http.server 8080\n' +
-            '3. Acesse: http://localhost:8080/dashboard_vistoriadores_v11.html\n\n' +
-            'Ou use o botão "Atualizar Base" para importar manualmente.'
-          ));
+          reject(new Error('proxy'));
           return;
         }
         const url = proxyList[i++];
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.timeout = 10000;
-        xhr.onload = () => {
-          if (xhr.status === 200 && xhr.responseText && xhr.responseText.length > 10) {
-            resolve(xhr.responseText);
-          } else next();
-        };
-        xhr.onerror = xhr.ontimeout = () => next();
-        xhr.send();
+        fetch(url)
+          .then(r => r.ok ? r.text() : Promise.reject())
+          .then(text => {
+            if (text && text.length > 10) resolve(text);
+            else next();
+          })
+          .catch(() => next());
       }
       next();
     }
   });
 }
 
+function _showSyncToast(type, msg) {
+  let toast = document.getElementById('syncToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'syncToast';
+    toast.style.cssText = `
+      position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+      background:#0d1320; border:1px solid var(--border); border-radius:12px;
+      padding:14px 22px; max-width:420px; width:90%; z-index:9999;
+      font-family:var(--font-body); font-size:0.82rem; line-height:1.6;
+      box-shadow:0 8px 32px rgba(0,0,0,0.5); display:none;
+    `;
+    document.body.appendChild(toast);
+  }
+  const colors = { error: '#ef4444', warn: '#f59e0b', ok: '#10b981' };
+  const color = colors[type] || colors.warn;
+  toast.style.borderColor = color + '55';
+  toast.innerHTML = msg;
+  toast.style.display = 'block';
+  clearTimeout(toast._t);
+  toast._t = setTimeout(() => { toast.style.display = 'none'; }, type === 'error' ? 8000 : 4000);
+}
+
 function csvToRows(csv) {
-  // cellDates: false garante que datas do CSV chegam como string pura (ex: "31/03/2026")
   const wb = XLSX.read(csv, { type: 'string', cellDates: false, raw: true });
   return XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, defval: '', raw: true });
 }
@@ -1164,8 +1197,23 @@ async function syncOnline() {
     } catch(e) { /* cancelados opcional */ }
 
     setLastUpdate('online ☁️');
+    _showSyncToast('ok', '✅ <strong style="color:#10b981">Dados atualizados</strong> com sucesso!');
+
   } catch(err) {
-    alert('❌ ' + err.message);
+    if (err.message === 'local') {
+      _showSyncToast('warn',
+        '📂 <strong style="color:#f59e0b">Arquivo aberto localmente</strong><br>' +
+        'A sincronização online só funciona quando o arquivo está publicado.<br>' +
+        'Use o botão <strong>Atualizar Base</strong> para importar o .xlsx manualmente.'
+      );
+    } else {
+      _showSyncToast('error',
+        '❌ <strong style="color:#ef4444">Não foi possível sincronizar</strong><br>' +
+        'A planilha precisa estar <strong>publicada na web</strong>:<br>' +
+        '<span style="color:var(--muted)">Google Sheets → Arquivo → Publicar na Web → CSV → Publicar</span><br>' +
+        '<span style="color:var(--muted)">Após publicar, aguarde 1 minuto e tente novamente.</span>'
+      );
+    }
   } finally {
     btn.innerHTML = '🔄 Sincronizar';
     btn.disabled = false;
